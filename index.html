@@ -144,11 +144,24 @@
                 requestAnimationFrame(animate);
 
                 updatePlanePosition();
-                if (checkCollision(planeModel, townModel.getObjectByName("twin_town001_1"))) {
-                    // Respond to the collision as needed
-                    console.log("die");
-                }
+                
+                const targetObjectName1 = "twin_town001_1";
+                const targetObjectName2 = "twin_town001_2"; //Correct object name for me please, because i don't f*cking know what object name the f*ck is
 
+                let collisionDetected = false;
+
+                townGroup.traverse((child) => {
+                    if (child.isMesh && (child.name === targetObjectName1 || child.name === targetObjectName2)) {
+                        if (checkCollision(planeModel, child)) {
+                            collisionDetected = true;
+                        }
+                    }
+                });
+
+                if (collisionDetected) {
+                    console.log("die");
+                
+                }
                 controls.update();
                 renderer.render(scene, camera);
             }
