@@ -54,7 +54,7 @@
             camera.lookAt(scene.position);
             camera.position.set(0, 70, -70);
 
-            //add background music
+            //Set up background music
             var listener = new THREE.AudioListener();
             camera.add(listener);
             var sound = new THREE.Audio(listener);
@@ -97,7 +97,7 @@
 
             const loader = new GLTFLoader();
             
-            loader.load('src/plane.gltf', (gltf) => {
+            loader.load('src/911.gltf', (gltf) => {
                 planeModel = gltf.scene;
                 planeModel.castShadow = true;
                 planeModel.receiveShadow = true;
@@ -121,7 +121,6 @@
                         blinnPhong(child);
                         child.castShadow = true;
                         child.receiveShadow = true;
-                        console.log(child.name);
                     }
                 });
                 townGroup.add(townModel);
@@ -143,25 +142,12 @@
             function animate() {
                 requestAnimationFrame(animate);
 
-                updatePlanePosition();
-                
-                const targetObjectName1 = "twin_town001_1";
-                const targetObjectName2 = "twin_town001_2"; //Correct object name for me please, because i don't f*cking know what object name the f*ck is
+                updatePlanePosition()
+                /*if (checkCollision(planeModel, townModel)) {
+                    // Respond to the collision as needed
+                    console.log("Collision detected!");
+                }*/
 
-                let collisionDetected = false;
-
-                townGroup.traverse((child) => {
-                    if (child.isMesh && (child.name === targetObjectName1 || child.name === targetObjectName2)) {
-                        if (checkCollision(planeModel, child)) {
-                            collisionDetected = true;
-                        }
-                    }
-                });
-
-                if (collisionDetected) {
-                    console.log("die");
-                
-                }
                 controls.update();
                 renderer.render(scene, camera);
             }
@@ -249,10 +235,6 @@
                     const dampingFactor = 0.95;
                     planeModel.rotation.z *= dampingFactor;
                 }
-
-                if(keys.S){
-                    camera.position.set(0, 70, -70);
-                }
             }
 
 
@@ -267,7 +249,6 @@
                 
                 renderer.setSize(newWidth, newHeight);
             });
-            
             
             animate();
         }
